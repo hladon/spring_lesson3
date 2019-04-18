@@ -19,7 +19,9 @@ public class File extends Object {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws Exception {
+        if (name.length()>10)
+            throw new Exception("Such name to long!");
         this.name = name;
     }
 
