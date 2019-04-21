@@ -5,30 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public class FileDAO implements Repository<File> {
-    private static SessionFactory sessionFactory;
-    @Override
-    public File save(File object) {
-        Session session = null;
-        Transaction transaction = null;
-        try {
-            session = createSessionFactory().openSession();
-            transaction = session.getTransaction();
-            transaction.begin();
-            session.save(object);
-            transaction.commit();
-        } catch (Exception e) {
-            System.err.println("Save is failed");
-            System.err.println(e.getMessage());
-            if (transaction != null)
-                transaction.rollback();
-        } finally {
-            if (session != null)
-                session.close();
-        }
-
-        return object;
-    }
+public class FileDAO extends DAO<File> implements Repository<File> {
 
     @Override
     public void delete(long id) {
@@ -54,28 +31,7 @@ public class FileDAO implements Repository<File> {
         }
     }
 
-    @Override
-    public File update(File object) {
-        Session session = null;
-        Transaction tr = null;
-        try {
-            session = createSessionFactory().openSession();
-            tr = session.getTransaction();
-            tr.begin();
-            session.update(object);
-            tr.commit();
-        } catch (Exception e) {
-            System.err.println("Update is failed");
-            System.err.println(e.getMessage());
-            if (tr != null)
-                tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
-        }
 
-        return object;
-    }
 
     @Override
     public File findById(long id) {
@@ -93,10 +49,5 @@ public class FileDAO implements Repository<File> {
         }
         return null;
     }
-    protected static SessionFactory createSessionFactory() {
-        if (sessionFactory == null) {
-            sessionFactory = new Configuration().configure().buildSessionFactory();
-        }
-        return sessionFactory;
-    }
+
 }

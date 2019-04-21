@@ -1,34 +1,11 @@
 package com;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
-public class StorageDAO implements Repository<Storage> {
-    private static SessionFactory sessionFactory;
-    @Override
-    public Storage save(Storage object) {
-        Session session = null;
-        Transaction transaction = null;
-        try {
-            session = createSessionFactory().openSession();
-            transaction = session.getTransaction();
-            transaction.begin();
-            session.save(object);
-            transaction.commit();
-        } catch (Exception e) {
-            System.err.println("Save is failed");
-            System.err.println(e.getMessage());
-            if (transaction != null)
-                transaction.rollback();
-        } finally {
-            if (session != null)
-                session.close();
-        }
 
-        return object;
-    }
+public class StorageDAO extends DAO<Storage> implements Repository<Storage> {
+
 
     @Override
     public void delete(long id) {
@@ -54,28 +31,6 @@ public class StorageDAO implements Repository<Storage> {
         }
     }
 
-    @Override
-    public Storage update(Storage object) {
-        Session session = null;
-        Transaction tr = null;
-        try {
-            session = createSessionFactory().openSession();
-            tr = session.getTransaction();
-            tr.begin();
-            session.update(object);
-            tr.commit();
-        } catch (Exception e) {
-            System.err.println("Update is failed");
-            System.err.println(e.getMessage());
-            if (tr != null)
-                tr.rollback();
-        } finally {
-            if (session != null)
-                session.close();
-        }
-
-        return object;
-    }
 
     @Override
     public Storage findById(long id) {
@@ -93,10 +48,5 @@ public class StorageDAO implements Repository<Storage> {
         }
         return null;
     }
-    protected static SessionFactory createSessionFactory() {
-        if (sessionFactory == null) {
-            sessionFactory = new Configuration().configure().buildSessionFactory();
-        }
-        return sessionFactory;
-    }
+
 }
