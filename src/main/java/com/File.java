@@ -39,7 +39,7 @@ public class File  {
     public void setFormat(String format) {
         this.format = format;
     }
-    @Column(name = "NAME")
+    @Column(name = "FILE_SIZE")
     public long getSize() {
         return size;
     }

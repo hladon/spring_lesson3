@@ -17,7 +17,8 @@
             QWer1234
         </property>
 
-        <mapping class="com.Item"></mapping>
+        <mapping class="com.Storage"></mapping>
+        <mapping class="com.File"></mapping>
 
 
     </session-factory>
