@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "FILES")
 public class File  {
-    private long id;
+    private int id;
     private String name;
     private String format;
     private long size;
@@ -14,11 +14,11 @@ public class File  {
     @SequenceGenerator(name = "FILES_SQ", sequenceName = "FILES_SQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "FILES_SQ")
     @Column(name = "ID",unique = true,nullable = false)
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
     @Column(name = "NAME")
@@ -48,7 +48,7 @@ public class File  {
         this.size = size;
     }
     @ManyToOne
-    @JoinColumn(name = "STORAGE")
+    @JoinColumn(name = "STORAGE_ID")
     public Storage getStorage() {
         return storage;
     }
