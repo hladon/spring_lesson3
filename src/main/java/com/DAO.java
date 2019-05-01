@@ -8,13 +8,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
 
-abstract class DAO <T> {
-    @Autowired
+abstract class DAO<T> {
+
     protected static SessionFactory sessionFactory;
-    @Transactional
+
     public T save(T object) {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(object);
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            session.save(object);
+            tr.commit();
+        } catch (Exception e) {
+            System.err.println("Save is failed");
+            System.err.println(e.getMessage());
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null)
+                session.close();
+        }
+
         return object;
     }
 

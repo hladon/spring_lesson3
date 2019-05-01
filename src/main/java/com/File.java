@@ -11,8 +11,8 @@ public class File  {
     private long size;
     private Storage storage;
     @Id
-    @SequenceGenerator(name = "FILES_SQ", sequenceName = "FILES_SQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "FILES_SQ")
+    @SequenceGenerator(name = "FILESQ", sequenceName = "FILESQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "FILESQ")
     @Column(name = "ID",unique = true,nullable = false)
     public long getId() {
         return id;
@@ -39,7 +39,7 @@ public class File  {
     public void setFormat(String format) {
         this.format = format;
     }
-    @Column(name = "NAME")
+    @Column(name = "FILE_SIZE")
     public long getSize() {
         return size;
     }
@@ -48,7 +48,7 @@ public class File  {
         this.size = size;
     }
     @ManyToOne
-    @JoinColumn(name = "STORAGE")
+    @JoinColumn(name = "STORAGE_ID")
     public Storage getStorage() {
         return storage;
     }

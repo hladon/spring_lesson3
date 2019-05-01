@@ -6,13 +6,13 @@ import java.util.List;
 public class Demo {
     public static void main(String[] args) {
         Storage storage=new Storage();
-        storage.setStorageSize(4500);
+        StorageDAO storageDAO=new StorageDAO();
         List<String> list=new ArrayList<>();
-        list.add("jpg");
         list.add("txt");
+        list.add("doc");
         storage.setFormatsSupported(list);
         storage.setStorageCountry("Germany");
-        StorageDAO storageDAO=new StorageDAO();
+        storage.setStorageSize(4500);
         storageDAO.save(storage);
     }
 }

@@ -7,6 +7,9 @@ public class Service {
     public static void put (Storage storage, File file)throws Exception{
         checkRestriction(storage,file);
         storage.setStorageSize(storage.getStorageSize()-file.getSize());
+        file.setStorage(storage);
+        fileDAO.update(file);
+
 
     }
 
