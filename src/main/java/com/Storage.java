@@ -17,9 +17,7 @@ public class Storage {
     public long getId() {
         return id;
     }
-    public void setId(long id) {
-        this.id = id;
-    }
+
     @ElementCollection
     @CollectionTable(name = "FORMATS",joinColumns = @JoinColumn(name="ID"))
     @Column(name = "FORMATS")
@@ -27,25 +25,31 @@ public class Storage {
         return formatsSupported;
     }
 
-    public void setFormatsSupported(List<String> formatsSupported ) {
-        this.formatsSupported = formatsSupported;
-    }
     @Column(name = "STORAGE_COUNTRY")
     public String getStorageCountry() {
         return storageCountry;
     }
 
-    public void setStorageCountry(String storageCountry) {
-        this.storageCountry = storageCountry;
-    }
     @Column(name = "STORAGE_MAX_SIZE")
     public long getStorageSize() {
         return storageSize;
+    }
+
+
+    public void setFormatsSupported(List<String> formatsSupported ) {
+        this.formatsSupported = formatsSupported;
+    }
+
+    public void setStorageCountry(String storageCountry) {
+        this.storageCountry = storageCountry;
     }
 
     public void setStorageSize(long storageSize) {
         this.storageSize = storageSize;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
 }

@@ -16,7 +16,7 @@
         <property name = "hibernate.connection.password">
             QWer1234
         </property>
-        <property name="hibernate.default_schema">spring_lesson3</property>
+
         <mapping class="com.Storage"></mapping>
         <mapping class="com.File"></mapping>
 

@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "FILES")
 public class File  {
-    private int id;
+    private long id;
     private String name;
     private String format;
     private long size;
@@ -14,11 +14,11 @@ public class File  {
     @SequenceGenerator(name = "FILESQ", sequenceName = "FILESQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "FILESQ")
     @Column(name = "ID",unique = true,nullable = false)
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
     @Column(name = "NAME")
