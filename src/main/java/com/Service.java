@@ -1,9 +1,12 @@
 package com;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 public class Service {
-    private static Repository fileDAO = new FileDAO();
+    @Autowired
+    private static Repository<File> fileDAO ;
 
     public static File put(Storage storage, File file) throws Exception {
         checkRestriction(storage, file);
