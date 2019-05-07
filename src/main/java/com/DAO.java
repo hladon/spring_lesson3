@@ -4,6 +4,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.NativeQuery;
+
+import java.util.List;
 
 
 abstract class DAO<T> {
@@ -19,11 +22,13 @@ abstract class DAO<T> {
             tr.begin();
             session.save(object);
             tr.commit();
+            System.out.println("Save is done!");
         } catch (Exception e) {
             System.err.println("Save is failed");
             System.err.println(e.getMessage());
             if (tr != null)
                 tr.rollback();
+            throw e;
         } finally {
             if (session != null)
                 session.close();
@@ -38,17 +43,55 @@ abstract class DAO<T> {
             tr.begin();
             session.update(object);
             tr.commit();
+            System.out.println("Update is done!");
         } catch (Exception e) {
             System.err.println("Update is failed");
-            System.err.println(e.getMessage());
             if (tr != null)
                 tr.rollback();
+            throw e;
         } finally {
             if (session != null)
                 session.close();
         }
         return object;
     }
+
+    public long getFreeStorageSpace(Storage storage) {
+        try {
+            session = createSessionFactory().openSession();
+            NativeQuery query = session.createNativeQuery("SELECT SUM(FILE_SIZE) FROM FILES WHERE STORAGE_ID=:d  ");
+            query.setParameter("d", storage.getId());
+            Object obj = query.getSingleResult();
+            long sum = 0;
+            if (obj != null)
+                sum = (Long) obj;
+            return storage.getStorageSize() - sum;
+        } catch (Exception e) {
+            System.err.println("Estimation of used space is failed");
+            throw e;
+        } finally {
+            if (session != null)
+                session.close();
+        }
+    }
+
+    public List<File> getFilesByStorage(Storage storage) {
+        try {
+            session = createSessionFactory().openSession();
+            NativeQuery query = session.createNativeQuery("SELECT * FROM FILES WHERE STORAGE_ID=:d  ");
+            query.setParameter("d", storage.getId());
+            List<File> list = query.getResultList();
+            return list;
+        } catch (Exception e) {
+            System.err.println("File search is failed!");
+            throw e;
+        } finally {
+            if (session != null)
+                session.close();
+        }
+
+    }
+
 
     protected static SessionFactory createSessionFactory() {
         if (sessionFactory == null) {

@@ -20,6 +20,7 @@ public class StorageDAO extends DAO<Storage> implements Repository<Storage> {
                 session.delete(persistentInstance);
             }
             tr.commit();
+            System.out.println("Delete is done!");
         } catch (Exception e) {
             System.err.println("Delete is failed");
             System.err.println(e.getMessage());
@@ -37,7 +38,7 @@ public class StorageDAO extends DAO<Storage> implements Repository<Storage> {
         Session session = null;
         try {
             session = createSessionFactory().openSession();
-            Storage storage  = session.get(Storage.class, id);
+            Storage storage = session.get(Storage.class, id);
             return storage;
         } catch (Exception e) {
             System.err.println("Search is failed");

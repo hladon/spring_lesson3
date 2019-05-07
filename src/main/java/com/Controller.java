@@ -1,19 +1,31 @@
 package com;
 
 public class Controller {
-    public static void put (Storage storage, File file){
-        if (storage!=null|| file!=null){
-
+    public static void put(Storage storage, File file) throws Exception {
+        if (storage != null || file != null) {
+            Service.put(storage, file);
         }
-    }
-    public static void delete(Storage storage, File file){
-
-    }
-    public static void transferAll(Storage storageFrom, Storage storageTo){
-
+        throw new Exception("One of entities not initialized! ");
     }
 
-    public static void transferFile(Storage storageFrom, Storage storageTo, long id){
+    public static void delete(Storage storage, File file) throws Exception {
+        if (storage != null || file != null) {
+            Service.delete(storage, file);
+        }
+        throw new Exception("One of entities not initialized!");
+    }
 
+    public static void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
+        if (storageFrom != null || storageTo != null) {
+            Service.transferAll(storageFrom, storageTo);
+        }
+        throw new Exception("One of entities not initialized! ");
+    }
+
+    public static void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
+        if (storageFrom != null || storageTo != null) {
+            Service.transferFile(storageFrom, storageTo, id);
+        }
+        throw new Exception("One of entities not initialized! ");
     }
 }

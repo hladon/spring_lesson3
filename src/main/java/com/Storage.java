@@ -10,16 +10,17 @@ public class Storage {
     private List<String> formatsSupported;
     private String storageCountry;
     private long storageSize;
+
     @Id
     @SequenceGenerator(name = "STORAGESQ", sequenceName = "STORAGESQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STORAGESQ")
-    @Column(name = "ID",unique = true,nullable = false)
+    @Column(name = "ID", unique = true, nullable = false)
     public long getId() {
         return id;
     }
 
     @ElementCollection
-    @CollectionTable(name = "FORMATS",joinColumns = @JoinColumn(name="ID"))
+    @CollectionTable(name = "FORMATS", joinColumns = @JoinColumn(name = "ID"))
     @Column(name = "FORMATS")
     public List<String> getFormatsSupported() {
         return formatsSupported;
@@ -36,7 +37,7 @@ public class Storage {
     }
 
 
-    public void setFormatsSupported(List<String> formatsSupported ) {
+    public void setFormatsSupported(List<String> formatsSupported) {
         this.formatsSupported = formatsSupported;
     }
 
