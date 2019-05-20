@@ -1,12 +1,10 @@
 package com;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 
 public class Service {
-    @Autowired
-    private static Repository<File> fileDAO ;
+
+    private static Repository<File> fileDAO =new FileDAO();
 
     public static File put(Storage storage, File file) throws Exception {
         checkRestriction(storage, file);
@@ -16,11 +14,9 @@ public class Service {
     }
 
     public static void delete(Storage storage, File file) throws Exception {
-        if (file.getStorage().equals(storage)) {
             file.setStorage(null);
             fileDAO.update(file);
-        }
-        throw new Exception("File " + file.getId() + " has different storage!");
+            return;
     }
 
     public static void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
@@ -45,7 +41,7 @@ public class Service {
     }
 
     private static void checkRestriction(Storage storage, File file) throws Exception {
-        if (fileDAO.getFreeStorageSpace(storage) > file.getSize()) {
+        if (fileDAO.getFreeStorageSpace(storage) < file.getSize()) {
             throw new Exception("Storage " + storage.getId() + "to small for file " + file.getId());
         }
         for (String format : storage.getFormatsSupported()) {
