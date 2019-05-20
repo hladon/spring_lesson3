@@ -39,6 +39,11 @@
             <version>5.2.12.Final</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator-cdi</artifactId>
+            <version>6.0.16.Final</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -6,6 +6,9 @@ import java.util.List;
 public class Demo {
     public static void main(String[] args) {
         StorageDAO storageDAO=new StorageDAO();
+        Controller.put();
+
+
 
 //        Storage storage=new Storage();
 //        List<String> list=new ArrayList<>();
@@ -21,6 +24,7 @@ public class Demo {
 //        System.out.println(storageDAO.findById(1));
 //        System.out.println(fileDAO.findById(1));
         System.out.println(fileDAO.getFreeStorageSpace(storageDAO.findById(1)));
+
 
     }
 }
