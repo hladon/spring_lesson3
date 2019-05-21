@@ -10,7 +10,8 @@ public class Demo {
 
         try {
 //            Controller.put(storageDAO.findById(1),fileDAO.findById(1));
-            Controller.delete(storageDAO.findById(1),fileDAO.findById(1));
+//            Controller.delete(storageDAO.findById(1),fileDAO.findById(1));
+            Controller.transferFile(storageDAO.findById(1),storageDAO.findById(2),1);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -31,7 +32,7 @@ public class Demo {
 
 //        System.out.println(storageDAO.findById(1));
 //        System.out.println(fileDAO.findById(1));
-        System.out.println(fileDAO.getFreeStorageSpace(storageDAO.findById(1)));
+        System.out.println(fileDAO.getFreeStorageSpace(storageDAO.findById(2)));
 
 
     }

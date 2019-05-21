@@ -7,6 +7,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.type.LongType;
 
+import java.math.BigInteger;
 import java.util.List;
 
 
@@ -60,9 +61,12 @@ abstract class DAO<T> {
     public long getFreeStorageSpace(Storage storage) {
         try {
             session = createSessionFactory().openSession();
-            NativeQuery query = session.createNativeQuery("SELECT SUM(FILE_SIZE) as count FROM FILES WHERE STORAGE_ID=:d  ").addScalar("count", LongType.INSTANCE);
+            NativeQuery query = session.createNativeQuery("SELECT SUM(FILE_SIZE) FROM FILES WHERE STORAGE_ID=:d  ");
             query.setParameter("d", storage.getId());
-            Long sum = (Long) query.getSingleResult();
+            Number result =(Number) query.getSingleResult();
+            long sum=0;
+            if (result!=null)
+                sum=result.longValue();
             return storage.getStorageSize() - sum;
         } catch (Exception e) {
             System.err.println("Estimation of used space is failed");

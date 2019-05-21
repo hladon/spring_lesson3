@@ -61,7 +61,6 @@ public class Storage {
         Storage storage = (Storage) o;
         return id == storage.id &&
                 storageSize == storage.storageSize &&
-                Objects.equals(formatsSupported, storage.formatsSupported) &&
                 Objects.equals(storageCountry, storage.storageCountry);
     }
 
