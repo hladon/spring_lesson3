@@ -17,4 +17,5 @@ public interface Repository<T> {
 
     List<File> getFilesByStorage(Storage storage);
 
+    void updateList(List<T> list);
 }

@@ -5,9 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.NativeQuery;
-import org.hibernate.type.LongType;
-
-import java.math.BigInteger;
 import java.util.List;
 
 
@@ -56,8 +53,26 @@ abstract class DAO<T> {
                 session.close();
         }
         return object;
+    }    public void updateList(List<T> list){
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            for (T object:list)
+                session.update(object);
+            tr.commit();
+            System.out.println("Save is done!");
+        } catch (Exception e) {
+            System.err.println("Save is failed");
+            System.err.println(e.getMessage());
+            if (tr != null)
+                tr.rollback();
+            throw e;
+        } finally {
+            if (session != null)
+                session.close();
+        }
     }
-
     public long getFreeStorageSpace(Storage storage) {
         try {
             session = createSessionFactory().openSession();

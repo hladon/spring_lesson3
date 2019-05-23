@@ -21,18 +21,7 @@ public class Service {
 
     public static void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
         File file = (File) fileDAO.findById(id);
-        transfer(storageFrom, storageTo, file);
-    }
-
-    public static void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
-        List<File> list = fileDAO.getFilesByStorage(storageFrom);
-        for (File file : list) {
-            transfer(storageFrom, storageTo, file);
-        }
-    }
-
-    private static void transfer(Storage storageFrom, Storage storageTo, File file) throws Exception {
-        if (file == null || !file.getStorage().equals(storageFrom)) {
+        if (!file.getStorage().equals(storageFrom)) {
             throw new Exception("File " + file.getId() + " don`t exist in storage " + storageFrom.getId());
         }
         checkRestriction(storageTo, file);
@@ -40,7 +29,25 @@ public class Service {
         fileDAO.update(file);
     }
 
+    public static void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
+        List<File> list = fileDAO.getFilesByStorage(storageFrom);
+        long size=0;
+        for (File file : list) {
+            checkRestriction(storageTo, file);
+            size+=file.getSize();
+        }
+        if (fileDAO.getFreeStorageSpace(storageTo)>size)
+            fileDAO.updateList(list);
+        throw new Exception("Files to big for storage "+storageTo.getId());
+    }
+
+
+
     private static void checkRestriction(Storage storage, File file) throws Exception {
+        if (fileDAO.getFreeStorageSpace(storage) < file.getSize()) {
+            System.out.println("File to big for storage"+ storage.getId());
+            throw new Exception("File " + file.getId() + " to big for storage " + storage.getId());
+        }
         if (fileDAO.getFreeStorageSpace(storage) < file.getSize()) {
             throw new Exception("Storage " + storage.getId() + "to small for file " + file.getId());
         }

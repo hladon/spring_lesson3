@@ -11,7 +11,8 @@ public class Demo {
         try {
 //            Controller.put(storageDAO.findById(1),fileDAO.findById(1));
 //            Controller.delete(storageDAO.findById(1),fileDAO.findById(1));
-            Controller.transferFile(storageDAO.findById(1),storageDAO.findById(2),1);
+//            Controller.transferFile(storageDAO.findById(2),storageDAO.findById(1),1);
+            Controller.transferAll(storageDAO.findById(2),storageDAO.findById(1));
         }catch (Exception e){
             e.printStackTrace();
         }
