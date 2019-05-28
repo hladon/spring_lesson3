@@ -3,8 +3,12 @@ package com;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.transform.Transformers;
+
+import javax.xml.transform.Transformer;
 import java.util.List;
 
 
@@ -96,7 +100,7 @@ abstract class DAO<T> {
         try {
             session = createSessionFactory().openSession();
             NativeQuery query = session.createNativeQuery("SELECT * FROM FILES WHERE STORAGE_ID=:d  ");
-            query.setParameter("d", storage.getId());
+            query.setParameter("d", storage.getId()).addEntity(File.class);
             List<File> list = query.getResultList();
             return list;
         } catch (Exception e) {

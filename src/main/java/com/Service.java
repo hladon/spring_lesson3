@@ -21,8 +21,8 @@ public class Service {
 
     public static void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
         File file = (File) fileDAO.findById(id);
-        if (!file.getStorage().equals(storageFrom)) {
-            throw new Exception("File " + file.getId() + " don`t exist in storage " + storageFrom.getId());
+        if (file!=null) {
+            throw new Exception("File " + file.getId() + " don`t exist in storage ");
         }
         checkRestriction(storageTo, file);
         file.setStorage(storageTo);
@@ -36,8 +36,9 @@ public class Service {
             checkRestriction(storageTo, file);
             size+=file.getSize();
         }
-        if (fileDAO.getFreeStorageSpace(storageTo)>size)
+        if (fileDAO.getFreeStorageSpace(storageTo)>size){
             fileDAO.updateList(list);
+            return;}
         throw new Exception("Files to big for storage "+storageTo.getId());
     }
 
