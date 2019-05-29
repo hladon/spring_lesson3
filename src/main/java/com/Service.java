@@ -21,7 +21,7 @@ public class Service {
 
     public static void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
         File file = (File) fileDAO.findById(id);
-        if (file!=null) {
+        if (file==null) {
             throw new Exception("File " + file.getId() + " don`t exist in storage ");
         }
         checkRestriction(storageTo, file);

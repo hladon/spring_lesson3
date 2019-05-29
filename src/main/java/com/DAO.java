@@ -57,12 +57,14 @@ abstract class DAO<T> {
                 session.close();
         }
         return object;
-    }    public void updateList(List<T> list){
+    }
+
+    public void updateList(List<T> list) {
         try {
             session = createSessionFactory().openSession();
             tr = session.getTransaction();
             tr.begin();
-            for (T object:list)
+            for (T object : list)
                 session.update(object);
             tr.commit();
             System.out.println("Save is done!");
@@ -77,15 +79,16 @@ abstract class DAO<T> {
                 session.close();
         }
     }
+
     public long getFreeStorageSpace(Storage storage) {
         try {
             session = createSessionFactory().openSession();
             NativeQuery query = session.createNativeQuery("SELECT SUM(FILE_SIZE) FROM FILES WHERE STORAGE_ID=:d  ");
             query.setParameter("d", storage.getId());
-            Number result =(Number) query.getSingleResult();
-            long sum=0;
-            if (result!=null)
-                sum=result.longValue();
+            Number result = (Number) query.getSingleResult();
+            long sum = 0;
+            if (result != null)
+                sum = result.longValue();
             return storage.getStorageSize() - sum;
         } catch (Exception e) {
             System.err.println("Estimation of used space is failed");
