@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Service {
 
-    private static Repository<File> fileDAO =new FileDAO();
+    private static Repository<File> fileDAO ;
 
     public static File put(Storage storage, File file) throws Exception {
         checkRestriction(storage, file);
