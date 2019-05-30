@@ -3,9 +3,12 @@ package com;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.transform.Transformers;
 
+import javax.xml.transform.Transformer;
 import java.util.List;
 
 
@@ -56,15 +59,36 @@ abstract class DAO<T> {
         return object;
     }
 
+    public void updateList(List<T> list) {
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            for (T object : list)
+                session.update(object);
+            tr.commit();
+            System.out.println("Save is done!");
+        } catch (Exception e) {
+            System.err.println("Save is failed");
+            System.err.println(e.getMessage());
+            if (tr != null)
+                tr.rollback();
+            throw e;
+        } finally {
+            if (session != null)
+                session.close();
+        }
+    }
+
     public long getFreeStorageSpace(Storage storage) {
         try {
             session = createSessionFactory().openSession();
             NativeQuery query = session.createNativeQuery("SELECT SUM(FILE_SIZE) FROM FILES WHERE STORAGE_ID=:d  ");
             query.setParameter("d", storage.getId());
-            Object obj = query.getSingleResult();
+            Number result = (Number) query.getSingleResult();
             long sum = 0;
-            if (obj != null)
-                sum = (Long) obj;
+            if (result != null)
+                sum = result.longValue();
             return storage.getStorageSize() - sum;
         } catch (Exception e) {
             System.err.println("Estimation of used space is failed");
@@ -79,7 +103,7 @@ abstract class DAO<T> {
         try {
             session = createSessionFactory().openSession();
             NativeQuery query = session.createNativeQuery("SELECT * FROM FILES WHERE STORAGE_ID=:d  ");
-            query.setParameter("d", storage.getId());
+            query.setParameter("d", storage.getId()).addEntity(File.class);
             List<File> list = query.getResultList();
             return list;
         } catch (Exception e) {

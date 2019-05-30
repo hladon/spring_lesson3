@@ -1,53 +1,55 @@
 package com;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
 import java.util.List;
 
 public class Service {
-    @Autowired
-    @Qualifier("FileDAO")
-    private static Repository repository;
+
+    private static Repository<File> fileDAO ;
 
     public static File put(Storage storage, File file) throws Exception {
         checkRestriction(storage, file);
         file.setStorage(storage);
-        repository.update(file);
+        fileDAO.update(file);
         return file;
     }
 
     public static void delete(Storage storage, File file) throws Exception {
-        if (file.getStorage().equals(storage)) {
             file.setStorage(null);
-            repository.update(file);
-        }
-        throw new Exception("File " + file.getId() + " has different storage!");
+            fileDAO.update(file);
+            return;
     }
 
     public static void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
-        File file = (File) repository.findById(id);
-        transfer(storageFrom, storageTo, file);
-    }
-
-    public static void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
-        List<File> list = repository.getFilesByStorage(storageFrom);
-        for (File file : list) {
-            transfer(storageFrom, storageTo, file);
-        }
-    }
-
-    private static void transfer(Storage storageFrom, Storage storageTo, File file) throws Exception {
-        if (file == null || !file.getStorage().equals(storageFrom)) {
-            throw new Exception("File " + file.getId() + " don`t exist in storage " + storageFrom.getId());
+        File file = (File) fileDAO.findById(id);
+        if (file==null) {
+            throw new Exception("File " + file.getId() + " don`t exist in storage ");
         }
         checkRestriction(storageTo, file);
         file.setStorage(storageTo);
-        repository.update(file);
+        fileDAO.update(file);
     }
 
+    public static void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
+        List<File> list = fileDAO.getFilesByStorage(storageFrom);
+        long size=0;
+        for (File file : list) {
+            checkRestriction(storageTo, file);
+            size+=file.getSize();
+        }
+        if (fileDAO.getFreeStorageSpace(storageTo)>size){
+            fileDAO.updateList(list);
+            return;}
+        throw new Exception("Files to big for storage "+storageTo.getId());
+    }
+
+
+
     private static void checkRestriction(Storage storage, File file) throws Exception {
-        if (repository.getFreeStorageSpace(storage) > file.getSize()) {
+        if (fileDAO.getFreeStorageSpace(storage) < file.getSize()) {
+            System.out.println("File to big for storage"+ storage.getId());
+            throw new Exception("File " + file.getId() + " to big for storage " + storage.getId());
+        }
+        if (fileDAO.getFreeStorageSpace(storage) < file.getSize()) {
             throw new Exception("Storage " + storage.getId() + "to small for file " + file.getId());
         }
         for (String format : storage.getFormatsSupported()) {

@@ -6,7 +6,17 @@ import java.util.List;
 public class Demo {
     public static void main(String[] args) {
         StorageDAO storageDAO=new StorageDAO();
-        Controller.put();
+        FileDAO fileDAO=new FileDAO();
+
+        try {
+//            Controller.put(storageDAO.findById(1),fileDAO.findById(1));
+            Controller.delete(storageDAO.findById(2),fileDAO.findById(2));
+//            Controller.transferFile(storageDAO.findById(2),storageDAO.findById(1),1);
+//            Controller.transferAll(storageDAO.findById(2),storageDAO.findById(1));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
 
@@ -18,12 +28,12 @@ public class Demo {
 //        storage.setStorageCountry("Germany");
 //        storage.setStorageSize(4500);
 //        storageDAO.save(storage);
-        FileDAO fileDAO=new FileDAO();
+
 //        File file1=new File();
 
 //        System.out.println(storageDAO.findById(1));
 //        System.out.println(fileDAO.findById(1));
-        System.out.println(fileDAO.getFreeStorageSpace(storageDAO.findById(1)));
+        System.out.println(fileDAO.getFreeStorageSpace(storageDAO.findById(2)));
 
 
     }

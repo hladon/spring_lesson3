@@ -2,6 +2,7 @@ package com;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "STORAGES")
@@ -19,7 +20,7 @@ public class Storage {
         return id;
     }
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "FORMATS", joinColumns = @JoinColumn(name = "ID"))
     @Column(name = "FORMATS")
     public List<String> getFormatsSupported() {
@@ -53,4 +54,18 @@ public class Storage {
         this.id = id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Storage storage = (Storage) o;
+        return id == storage.id &&
+                storageSize == storage.storageSize &&
+                Objects.equals(storageCountry, storage.storageCountry);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, storageCountry);
+    }
 }

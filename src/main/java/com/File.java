@@ -38,7 +38,7 @@ public class File {
     }
 
 
-    @ManyToOne
+    @ManyToOne(fetch =FetchType.EAGER)
     @JoinColumn(name = "STORAGE_ID")
     public Storage getStorage() {
         return storage;
