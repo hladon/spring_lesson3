@@ -1,35 +1,37 @@
 package com;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
 public class Service {
     @Autowired
-    private static Repository<File> fileDAO ;
+    @Qualifier("FileDAO")
+    private static Repository repository;
 
     public static File put(Storage storage, File file) throws Exception {
         checkRestriction(storage, file);
         file.setStorage(storage);
-        fileDAO.update(file);
+        repository.update(file);
         return file;
     }
 
     public static void delete(Storage storage, File file) throws Exception {
         if (file.getStorage().equals(storage)) {
             file.setStorage(null);
-            fileDAO.update(file);
+            repository.update(file);
         }
         throw new Exception("File " + file.getId() + " has different storage!");
     }
 
     public static void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
-        File file = (File) fileDAO.findById(id);
+        File file = (File) repository.findById(id);
         transfer(storageFrom, storageTo, file);
     }
 
     public static void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
-        List<File> list = fileDAO.getFilesByStorage(storageFrom);
+        List<File> list = repository.getFilesByStorage(storageFrom);
         for (File file : list) {
             transfer(storageFrom, storageTo, file);
         }
@@ -41,11 +43,11 @@ public class Service {
         }
         checkRestriction(storageTo, file);
         file.setStorage(storageTo);
-        fileDAO.update(file);
+        repository.update(file);
     }
 
     private static void checkRestriction(Storage storage, File file) throws Exception {
-        if (fileDAO.getFreeStorageSpace(storage) > file.getSize()) {
+        if (repository.getFreeStorageSpace(storage) > file.getSize()) {
             throw new Exception("Storage " + storage.getId() + "to small for file " + file.getId());
         }
         for (String format : storage.getFormatsSupported()) {
