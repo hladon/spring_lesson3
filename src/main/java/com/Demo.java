@@ -9,8 +9,8 @@ public class Demo {
         FileDAO fileDAO=new FileDAO();
 
         try {
-//            Controller.put(storageDAO.findById(1),fileDAO.findById(1));
-            Controller.delete(storageDAO.findById(2),fileDAO.findById(2));
+            Controller.put(storageDAO.findById(1),fileDAO.findById(1));
+//            Controller.delete(storageDAO.findById(2),fileDAO.findById(2));
 //            Controller.transferFile(storageDAO.findById(2),storageDAO.findById(1),1);
 //            Controller.transferAll(storageDAO.findById(2),storageDAO.findById(1));
         }catch (Exception e){
