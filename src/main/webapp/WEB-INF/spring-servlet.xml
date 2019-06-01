@@ -10,6 +10,7 @@
     <context:component-scan base-package="com"/>
     <bean id="FileDAO"  class="com.FileDAO"></bean>
     <bean id="Service"  class="com.Service">
-        <constructor-arg index="0" ref="FileDAO"></constructor-arg>
+        <constructor-arg  ref="FileDAO"></constructor-arg>
     </bean>
+    <bean id="Controller"  class="com.Controller"></bean>
 </beans>
