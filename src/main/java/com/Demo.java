@@ -7,10 +7,11 @@ public class Demo {
     public static void main(String[] args) {
         StorageDAO storageDAO=new StorageDAO();
         FileDAO fileDAO=new FileDAO();
+        Controller controller=new Controller();
 
         try {
-//            Controller.put(storageDAO.findById(1),fileDAO.findById(1));
-            Controller.delete(storageDAO.findById(2),fileDAO.findById(2));
+            controller.put(storageDAO.findById(1),fileDAO.findById(1));
+//            Controller.delete(storageDAO.findById(2),fileDAO.findById(2));
 //            Controller.transferFile(storageDAO.findById(2),storageDAO.findById(1),1);
 //            Controller.transferAll(storageDAO.findById(2),storageDAO.findById(1));
         }catch (Exception e){
